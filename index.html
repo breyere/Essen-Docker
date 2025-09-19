@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Essensplan" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="referrer" content="no-referrer" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' http://192.168.1.136:5173; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'" />
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Familien Essensplan</title>
+    <link rel="stylesheet" href="styles.css?v=3" />
+    <link rel="manifest" href="/manifest.webmanifest?v=1">
+    <link rel="icon" href="/icon-192.png" type="image/png" />
+    <meta name="theme-color" content="#53d22d" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+  </head>
+  <body>
+    <div id="lockScreen" class="lock-screen" hidden aria-hidden="true"></div>
+    <header class="app-header">
+      <div class="brand">
+        <span class="logo" aria-hidden="true"><img src="/icon-192.png" alt="" /></span>
+        <h1>Familien Essensplan</h1>
+      </div>
+      <div class="week-controls">
+        <button id="prevWeekBtn" class="btn">◀︎ Vorherige</button>
+        <div id="weekLabel" class="week-label">Woche</div>
+        <button id="nextWeekBtn" class="btn">Nächste ▶︎</button>
+        <button id="currentWeekBtn" class="btn">Aktuelle Woche</button>
+        <button id="generateBtn" class="btn primary" title="Nur für Köchin sichtbar">Plan generieren</button>
+      </div>
+      <div class="search-controls">
+        <input id="searchInput" type="text" placeholder="KI Suche: z. B. vegetarisch, letzte Linsensuppe …" />
+        <button id="searchBtn" class="btn">Suchen</button>
+      </div>
+      <div class="prompt-controls adult-only">
+        <details>
+          <summary>Prompt</summary>
+          <div class="prompt-settings">
+            <label for="customPrompt">Köchin‑Prompt (wird gespeichert)</label>
+            <textarea id="customPrompt" rows="3" placeholder="Zusätzliche Wünsche/Vorgaben für die KI"></textarea>
+            <button id="savePromptBtn" class="btn">Prompt speichern</button>
+            <span id="aiStatus" class="ai-status" aria-live="polite"></span>
+          </div>
+        </details>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="content">
+        <section class="foods card">
+          <header>
+            <h2>Gerichte</h2>
+            <div class="add-food">
+              <input id="foodName" type="text" placeholder="Name des Gerichts" />
+              <select id="foodType">
+                <option value="Hauptgericht">Hauptgericht</option>
+                <option value="Beilage">Beilage</option>
+                <option value="Salat">Salat</option>
+                <option value="Dessert">Dessert</option>
+              </select>
+              <input id="foodTags" type="text" placeholder="Tags (z.B. italienisch, vegan)" />
+              <button id="addFoodBtn" class="btn">Hinzufügen</button>
+            </div>
+          </header>
+          <ul id="foodsList" class="foods-list" aria-live="polite"></ul>
+        </section>
+
+        <section class="plan card">
+          <header class="plan-header">
+            <h2>Wochenplan</h2>
+            <span class="plan-note">Nur Mittagessen pro Tag</span>
+          </header>
+          <div id="weekGrid" class="week-grid" aria-live="polite"></div>
+        </section>
+
+        <section class="search card">
+          <header>
+            <h2>KI Suche</h2>
+          </header>
+          <div id="searchResults" class="messages"></div>
+        </section>
+
+        <section class="ai-messages card adult-only">
+          <header>
+            <h2>KI Nachrichten</h2>
+          </header>
+          <div id="aiMessages" class="messages"></div>
+        </section>
+      </section>
+
+      <aside class="profiles">
+        <div class="profiles-header adult-only">
+          <h2>Profile</h2>
+          <button id="addProfileBtn" class="btn">Profil hinzufügen</button>
+        </div>
+        <ul id="profilesList" class="profiles-list" aria-live="polite"></ul>
+      </aside>
+    </main>
+
+    <footer class="app-footer">
+      <small>Nur für unsere Familie – keine Anmeldung. Daten bleiben lokal.</small>
+    </footer>
+
+    <!-- Hidden image picker for profile pictures -->
+    <input id="profileImageInput" type="file" accept="image/*" style="display:none" />
+
+    <script src="db.js?v=3"></script>
+    <script src="app.js?v=3"></script>
+  </body>
+  </html>
